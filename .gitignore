@@ -1,0 +1,13 @@
+# Python 编译文件
+__pycache__/
+*.pyc
+*.pyo
+
+# 日志文件
+*.log
+
+# IDE 配置
+.idea/
+
+# 虚拟环境
+.venv/
