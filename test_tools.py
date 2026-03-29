@@ -11,3 +11,4 @@ if __name__ == "__main__":
 
     # 测试日志
     log_message("INFO", "测试完成")
+    log_message("ERROR", "模型加载失败：文件不存在", log_file="app.log")
