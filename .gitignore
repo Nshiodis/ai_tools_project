@@ -11,3 +11,8 @@ __pycache__/
 
 # 虚拟环境
 .venv/
+
+# 运行时生成的 JSON 历史文件
+*.json
+
+.histories/
