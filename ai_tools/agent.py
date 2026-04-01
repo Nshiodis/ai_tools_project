@@ -1,5 +1,8 @@
+import logging
 from typing import Dict, List, Optional
 from .history_utils import save_conversation, load_conversation
+
+logger = logging.getLogger(__name__)
 
 class Agent:
     """所有对话代理的基类"""
@@ -24,18 +27,28 @@ class Agent:
         self.history.append({"role": role, "content": content})
 
     def save_history(self, filepath: str) -> None:
-        """保存当前对话历史到文件"""
+        """保存对话历史，捕获异常并记录日志"""
         save_conversation(self.history, filepath)
 
     def load_history(self, filepath: str) -> None:
-        """从文件加载对话历史到当前实例（替换原有历史）"""
-        self.history = load_conversation(filepath)
+        """加载对话历史，若失败则保持原历史不变"""
+        try:
+            loaded = load_conversation(filepath)
+            self.history = loaded
+            logger.info(f"成功加载 {len(self.history)} 条历史记录")
+        except Exception as e:
+            logger.error(f"加载历史时出错: {e}")
 
     def respond(self, message: str) -> str:
-        self._record_message("user", message)
-        reply = self._generate_response(message) #子类实现
-        self._record_message("agent", reply)
-        return reply
+        """生成回复，确保即使子类出错也有兜底"""
+        try:
+            self._record_message("user", message)
+            reply = self._generate_response(message) #子类实现
+            self._record_message("agent", reply)
+            return reply
+        except Exception as e:
+            logger.error(f"生成回复时出错: {e}")
+            return f"【{self.name}】抱歉，我遇到了一些问题，暂时无法回复。"
 
 class AssistantAgent(Agent):
     def _generate_response(self, message: str) -> str:

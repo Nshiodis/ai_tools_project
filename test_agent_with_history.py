@@ -1,5 +1,15 @@
 import os
 from ai_tools import AssistantAgent, CodeAgent, TranslatorAgent
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler("app.log", encoding='utf-8'),   # 写入文件
+        logging.StreamHandler() # 同时输出到控制台
+    ]
+)
 
 assistant = AssistantAgent("小助","通用助手")
 code_bot = CodeAgent("码农","编程专家")

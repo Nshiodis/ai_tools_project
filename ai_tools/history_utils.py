@@ -1,35 +1,47 @@
 import json
+import os
+import logging
+from os.path import dirname
 from typing import Optional, List, Dict
+
+logger = logging.getLogger(__name__)    # __name__ 是模块名，如 'ai_tools.history_utils'
 
 def save_conversation(conversation: List[Dict[str,str]], filepath: str) -> None:
     """
-    将对话历史保存为 JSON 文件。
-
-    Args:
-        conversation: 对话列表，每个元素是包含 'role' 和 'content' 的字典
-        filepath: 保存路径
+    将对话历史保存为 JSON 文件。如果出错，记录错误但不抛出异常。
     """
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(conversation, f, ensure_ascii=False, indent=2)
+    try:
+        #确保目录存在
+        dir_path = os.path.dirname(filepath)
+        if dir_path:
+            os.makedirs(dir_path, exist_ok=True)
+        with open(filepath, "w", encoding="utf-8") as f:
+            json.dump(conversation, f, ensure_ascii=False, indent=2)
+        logger.info(f"成功保存对话历史到{filepath}")
+    except(OSError, IOError) as e:
+        logger.error(f"保存文件失败:{e}")
+    except TypeError as e:
+        logger.error(f"对话数据包含不可序列化对象:{e}")
+    except Exception as e:
+        logger.error(f"保存对话历史时发生未知错误: {e}")
 
-def load_conversation(filepath: str) -> list:
+def load_conversation(filepath: str) -> List[Dict[str, str]]:
     """
-    从 JSON 文件加载对话历史。如果文件不存在，返回空列表。
-
-    Args:
-        filepath: 文件路径
-
-    Returns:
-        对话列表，若文件不存在则为空列表
+    从 JSON 文件加载对话历史。如果出错，返回空列表并记录日志。
     """
     try:
         with open(filepath, "r", encoding="utf-8") as f:
-            return json.load(f)
+            data=json.load(f)
+        logger.info(f"成功加载对话历史从{filepath}")
+        return data
     except FileNotFoundError:
-        print("文件不存在，使用默认数据")
+        logger.warning(f"文件不存在:{filepath}，返回空列表")
         return []
-    except json.decoder.JSONDecodeError:
-        print("文件内容损坏，使用默认数据")
+    except json.JSONDecodeError as e:
+        logger.error(f"JSON解析失败:{e}，返回空列表")
+        return []
+    except Exception as e:
+        logger.error(f"未知错误:{e},返回空列表")
         return []
 
 def append_message(conversation: List[Dict[str,str]], role: str, content:str,
