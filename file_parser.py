@@ -47,4 +47,3 @@ def main(folder_path, max_workers=5):
 if __name__ == "__main__":
     # 请将这里的路径替换为你自己创建的测试文件夹路径
     main("test_docs")
-# 生成一个编码错误的文件（放在 test_docs 目录下）
