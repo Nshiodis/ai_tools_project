@@ -16,3 +16,5 @@ __pycache__/
 *.json
 
 .histories/
+
+.ai_tools_demo/
