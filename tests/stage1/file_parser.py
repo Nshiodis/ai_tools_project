@@ -74,4 +74,4 @@ def main(folder_path, max_workers=5):
 
 if __name__ == "__main__":
     # 当直接运行此脚本时，执行 main 函数，测试文件夹为当前目录下的 test_docs
-    main("test_docs")
+    main("../../test_docs")

@@ -1,7 +1,7 @@
 import os
 from ai_tools import save_conversation, load_conversation, append_message
 
-HISTORY_DIR = "histories"
+HISTORY_DIR = "../../histories"
 os.makedirs(HISTORY_DIR, exist_ok=True)
 # 1. 创建一个空对话列表
 history=[]

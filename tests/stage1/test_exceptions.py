@@ -11,9 +11,9 @@ print("=== 1. 测试文件不存在 ===")
 load_conversation("nonexistent.json")
 
 print("\n=== 2. 测试损坏的 JSON ===")
-with open("histories/corrupt.json", "w") as f:
+with open("../../histories/corrupt.json", "w") as f:
     f.write("{")
-load_conversation("histories/corrupt.json")
+load_conversation("../../histories/corrupt.json")
 
 print("\n=== 3. 测试保存到无效路径 ===")
 save_conversation([], "C:/invalid/path/history.json")

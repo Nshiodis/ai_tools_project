@@ -6,7 +6,7 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler("app.log", encoding='utf-8'),   # 写入文件
+        logging.FileHandler("../../app.log", encoding='utf-8'),   # 写入文件
         logging.StreamHandler() # 同时输出到控制台
     ]
 )
@@ -32,7 +32,7 @@ for msg in messages:
 
 
 # 定义历史文件存放目录
-HISTORY_DIR = "histories"
+HISTORY_DIR = "../../histories"
 # 如果目录不存在，则创建
 os.makedirs(HISTORY_DIR, exist_ok=True)
 
